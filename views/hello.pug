@@ -1,0 +1,7 @@
+extends layout.pug
+
+block content
+    form(action='/hello', method='POST')
+      label Plese enter your name:
+        input(type='text', name='username')
+      button(type='submit') Submit

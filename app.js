@@ -1,0 +1,32 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.set('view engine', 'pug');
+
+const mainRoutes = require('./routes');
+const cardRoutes = require('./routes/cards');
+
+app.use(mainRoutes);
+app.use('/cards', cardRoutes);
+
+app.use((err, req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
+});
+
+app.use((err, req, res, next) => {
+  res.locals.error = err;
+  res.status(err.status);
+  res.render('error', err);
+});
+
+app.listen(3000, () => {
+  console.log('The application is running on localhost:3000 XD')
+});
